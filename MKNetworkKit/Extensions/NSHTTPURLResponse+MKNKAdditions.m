@@ -49,10 +49,11 @@
     if([substring.lowercaseString rangeOfString:@"max-age"].location != NSNotFound) {
       
       // do some processing to calculate expiresOn
-      NSString *maxAge = nil;
+      NSString * maxAgeStr = nil;
       NSArray *array = [substring componentsSeparatedByString:@"="];
       if(array.count > 1) {
-        maxAge = array[1];
+        maxAgeStr = array[1];
+        maxAge =[maxAgeStr integerValue];
         *stop = YES;
       }
     }

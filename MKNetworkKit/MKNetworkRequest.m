@@ -144,6 +144,15 @@ static NSString * kBoundary = @"0xKhTmLbOuNdArY";
             forHTTPHeaderField:@"Content-Type"];
       bodyStringFromParameters = [self.parameters plistEncodedKeyValueString];
     }
+          break;
+      case MKNKParameterEncodingTypeCustom:{
+          bodyStringFromParameters = self.postDataEncodingHandler(self.parameters);
+		  // do it in setCustomPostDataEncodingHandler
+          //[createdRequest setValue: [NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
+      }
+          break;
+    default:
+          break;
   }
   
   
@@ -577,6 +586,14 @@ static NSString * kBoundary = @"0xKhTmLbOuNdArY";
     MKNKHandler handler = obj;
     handler(self);
   }];
+}
+
+-(void)setCustomPostDataEncodingHandler:(MKNKEncodingBlock)postDataEncodingHandler forType:(NSString *)contentType
+{
+    NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    self.parameterEncoding = MKNKParameterEncodingTypeCustom;
+    self.postDataEncodingHandler = postDataEncodingHandler;
+    [self.request setValue:[NSString stringWithFormat:@"%@; charset=%@", contentType, charset]forHTTPHeaderField:@"Content-Type"];
 }
 
 @end

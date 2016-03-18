@@ -34,9 +34,11 @@ typedef enum {
   
   MKNKParameterEncodingURL = 0, // default
   MKNKParameterEncodingJSON,
-  MKNKParameterEncodingPlist
+  MKNKParameterEncodingPlist,
+  MKNKParameterEncodingTypeCustom, // add Custom support like V1.0 version
 } MKNKParameterEncoding;
 
+typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 
 typedef enum {
   
@@ -108,6 +110,11 @@ typedef enum {
 
 typedef void (^MKNKHandler)(MKNetworkRequest* completedRequest);
 
+/**
+ *  add Custom postDataEncoding
+ */
+@property (nonatomic, copy) MKNKEncodingBlock postDataEncodingHandler;
+
 -(void) addParameters:(NSDictionary*) paramsDictionary;
 -(void) addHeaders:(NSDictionary*) headersDictionary;
 -(void) setAuthorizationHeaderValue:(NSString*) token forAuthType:(NSString*) authType;
@@ -119,4 +126,7 @@ typedef void (^MKNKHandler)(MKNetworkRequest* completedRequest);
 -(void) addUploadProgressChangedHandler:(MKNKHandler) uploadProgressChangedHandler;
 -(void) addDownloadProgressChangedHandler:(MKNKHandler) downloadProgressChangedHandler;
 -(void) cancel;
+
+//add Custom post Encoding Handler like Version 1
+-(void) setCustomPostDataEncodingHandler:(MKNKEncodingBlock) postDataEncodingHandler forType:(NSString*) contentType;
 @end

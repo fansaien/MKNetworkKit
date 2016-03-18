@@ -140,9 +140,10 @@ NSString *const kMKCacheDefaultDirectoryName = @"com.mknetworkkit.mkcache";
 
 - (instancetype) initWithHostName:(NSString*) hostName {
   
-  MKNetworkHost *engine = [[MKNetworkHost alloc] init];
-  engine.hostName = hostName;
-  return engine;
+    if (self=[self init]) {
+        self.hostName = hostName;
+    }
+    return self;
 }
 
 -(void) enableCache {
